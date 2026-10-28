@@ -14,7 +14,7 @@ for w,s,t in W:
     c["w_"+w]=[w,0.8]; c["s_"+w]=[s,0.85]; c["t_"+w]=[t,0.85]
 L={"a":"A","b":"bee","d":"dee","e":"ee","f":"ef","k":"kay","l":"el","m":"em","p":"pee","s":"ess","t":"tee","w":"double you"}
 for k,v in L.items(): c["l_"+k]=[v,0.85]
-c["intro"]=["Ee. Ee. The long e sound, like in me, see, and tree.",0.8]
+c["intro"]=["Listen to the long e sound: eee. Like in me, see, and tree.",0.8]
 for k,v in {"p0":"Great job!","p1":"Super!","p2":"You got it!","p3":"Brilliant!","perfect":"Perfect!","almost":"Almost! Look carefully.","done10":"Perfect score! Well done!"}.items(): c[k]=[v,0.9]
 nums=["zero","one","two","three","four","five","six","seven","eight","nine"]
 for i,n in enumerate(nums): c[f"score{i}"]=[f"You got {n} out of ten. Well done!",0.9]
