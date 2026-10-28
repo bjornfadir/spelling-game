@@ -1,0 +1,6 @@
+tts/kokoro.onnx
+tts/voices.bin
+tts/kokoro-onnx/
+tts/out_*/
+tts/esp/
+__pycache__/

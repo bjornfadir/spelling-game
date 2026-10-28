@@ -1,0 +1,357 @@
+<title>Long E Spelling Quest</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Andika:wght@400;700&display=swap">
+<style>
+/* Layout: one centered play card, mode picker on top, big letters, tablet-first tap targets */
+:root{
+  --bg:#eaf6f4; --card:#ffffff; --ink:#173a3a; --muted:#5b7a78;
+  --sea:#1f8a83; --sun:#f3a712; --berry:#d6456b; --leaf:#3c9d4e; --line:#cfe5e1; --soft:#f3faf8;
+  --display:"Baloo 2","Trebuchet MS",system-ui,sans-serif;
+  --body:"Andika","Verdana",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f2222; --card:#163030; --ink:#e6f4f1; --muted:#9dbdb8;
+  --sea:#4cc3b9; --sun:#f6bd45; --berry:#f0708f; --leaf:#6cc97c; --line:#264646; --soft:#1b3a3a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f2222; --card:#163030; --ink:#e6f4f1; --muted:#9dbdb8;
+  --sea:#4cc3b9; --sun:#f6bd45; --berry:#f0708f; --leaf:#6cc97c; --line:#264646; --soft:#1b3a3a; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:18px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
+.wrap{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+h1{font-family:var(--display);font-weight:800;font-size:2rem;line-height:1;margin:0;text-wrap:balance}
+h1 .ee{color:var(--sea)} h1 .ea{color:var(--sun)}
+.stars{font-family:var(--display);font-size:1.3rem;font-weight:800;color:var(--sun);font-variant-numeric:tabular-nums}
+.modes{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.modes button{font-family:var(--display);font-weight:600;font-size:1rem;padding:10px 6px;border-radius:14px;border:2px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;line-height:1.15}
+.modes button[aria-pressed="true"]{border-color:var(--sea);background:var(--sea);color:var(--card)}
+@media (max-width:480px){.modes{grid-template-columns:repeat(2,1fr)}}
+.card{background:var(--card);border:2px solid var(--line);border-radius:24px;padding:24px 20px;display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center;min-height:380px}
+.progress{width:100%;display:flex;gap:6px}
+.progress i{flex:1;height:8px;border-radius:4px;background:var(--line)}
+.progress i.ok{background:var(--leaf)} .progress i.bad{background:var(--berry)} .progress i.now{background:var(--sun)}
+.emoji{font-size:3.4rem;line-height:1}
+.sentence{font-size:1.25rem;line-height:1.5;max-width:30ch}
+.sentence b{display:inline-block;min-width:3.5em;border-bottom:3px solid var(--sea);color:var(--sea)}
+.btn{font-family:var(--display);font-weight:800;font-size:1.2rem;border:none;border-radius:16px;padding:12px 22px;cursor:pointer;color:#fff;background:var(--sea)}
+.btn.sun{background:var(--sun);color:#3a2800} .btn.ghost{background:var(--soft);color:var(--ink);border:2px solid var(--line)}
+.btn:focus-visible,.modes button:focus-visible,.tile:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+.row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+input.spell{font-family:var(--body);font-size:2.2rem;font-weight:700;letter-spacing:.12em;text-align:center;width:100%;max-width:320px;padding:10px;border-radius:16px;border:3px solid var(--line);background:var(--soft);color:var(--ink)}
+.word{font-family:var(--body);font-weight:700;font-size:3rem;letter-spacing:.08em;display:flex;gap:4px;justify-content:center;flex-wrap:wrap}
+.word span.gap{min-width:1.6em;border-bottom:4px solid var(--sun);color:var(--sun)}
+.choice{font-family:var(--body);font-weight:700;font-size:2.4rem;min-width:130px;padding:10px 20px;border-radius:20px;border:3px solid var(--line);background:var(--soft);color:var(--ink);cursor:pointer}
+.choice.ee{border-color:var(--sea)} .choice.ea{border-color:var(--sun)}
+.tile{font-family:var(--body);font-weight:700;font-size:1.8rem;width:56px;height:56px;border-radius:14px;border:3px solid var(--line);background:var(--soft);color:var(--ink);cursor:pointer}
+.tile:disabled{opacity:.25;cursor:default}
+.slots{display:flex;gap:6px;justify-content:center;min-height:64px}
+.slots span{width:52px;height:60px;border-bottom:4px solid var(--sea);font-family:var(--body);font-weight:700;font-size:2rem;display:flex;align-items:center;justify-content:center}
+.feedback{font-family:var(--display);font-weight:800;font-size:1.4rem;min-height:1.6em}
+.feedback.ok{color:var(--leaf)} .feedback.bad{color:var(--berry)}
+.answer{font-size:1.3rem} .answer .hl{color:var(--berry);text-decoration:underline}
+.note{color:var(--muted);font-size:.95rem;max-width:44ch;line-height:1.5}
+.list{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;width:100%}
+.list button{display:flex;align-items:center;gap:10px;font-family:var(--body);font-weight:700;font-size:1.5rem;padding:10px 14px;border-radius:16px;border:2px solid var(--line);background:var(--soft);color:var(--ink);cursor:pointer;text-align:left}
+.list .e{font-size:1.6rem}
+.ee-c{color:var(--sea)} .ea-c{color:var(--sun)}
+.big{font-family:var(--display);font-size:2.4rem;font-weight:800;margin:0}
+.btn.small{font-size:1rem;padding:8px 14px}
+.teams{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%}
+@media (max-width:440px){.teams{grid-template-columns:1fr}}
+.team{display:flex;flex-direction:column;gap:8px;padding:12px;border-radius:18px;border:2px solid var(--line);background:var(--soft);min-width:0}
+.team.ee{border-color:var(--sea)} .team.ea{border-color:var(--sun)}
+.team-h{font-family:var(--display);font-weight:800;font-size:1.3rem}
+.lw{display:flex;align-items:center;gap:10px;font-family:var(--body);font-weight:700;font-size:1.4rem;padding:8px 12px;border-radius:14px;border:2px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;text-align:left}
+.lw-w{flex:1} .tick{font-size:1.1rem;min-width:1.4em}
+.ltop{width:100%;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;width:100%}
+.steps span{font-family:var(--display);font-weight:600;font-size:.85rem;padding:6px 4px;border-radius:10px;background:var(--soft);color:var(--muted);border:2px solid var(--line);line-height:1.15}
+.steps span.on{background:var(--sea);border-color:var(--sea);color:var(--card)}
+.steps span.done{color:var(--leaf);border-color:var(--leaf)}
+.big-word{font-size:4rem}
+.trick{background:var(--soft);border:2px dashed var(--sun);border-radius:16px;padding:12px 16px;font-size:1.15rem;line-height:1.5;max-width:34ch;display:flex;flex-direction:column;gap:4px}
+.trick u{text-decoration:none;font-weight:700;color:var(--berry)}
+.trick-l{font-family:var(--display);font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.letters{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.letters span{width:60px;height:72px;border-radius:14px;border:3px solid var(--line);background:var(--soft);display:flex;align-items:center;justify-content:center;font-family:var(--body);font-weight:700;font-size:2.4rem;transition:transform .15s,background .15s}
+.letters .ee-box{border-color:var(--sea);color:var(--sea)} .letters .ea-box{border-color:var(--sun);color:var(--sun)}
+.letters span.lit{background:var(--sun);color:#3a2800;transform:translateY(-6px) scale(1.08);border-color:var(--sun)}
+.letters.covered span{color:var(--muted);background:var(--line)}
+.letters.cmp span{width:48px;height:56px;font-size:1.9rem}
+.letters span.good{border-color:var(--leaf);color:var(--leaf)} .letters span.wrong{border-color:var(--berry);color:var(--berry);background:var(--card)}
+.cmpwrap{display:flex;flex-direction:column;gap:6px;align-items:center}
+@media (max-width:440px){.letters span{width:50px;height:62px;font-size:2rem}.big-word{font-size:3.2rem}.steps span{font-size:.75rem}}
+@keyframes pop{0%{transform:scale(.6)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.pop{animation:pop .4s ease} .shake{animation:shake .3s ease 2}
+@media (prefers-reduced-motion:reduce){.pop,.shake{animation:none}}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Long <span class="ee">ee</span> &amp; <span class="ea">ea</span> Quest</h1>
+    <div class="stars" id="stars" aria-label="Stars">⭐ 0</div>
+  </header>
+  <nav class="modes" aria-label="Game mode">
+    <button id="m-learn" data-mode="learn" aria-pressed="true">📖 Learn</button>
+    <button id="m-eeea" data-mode="eeea" aria-pressed="false">🔤 ee or ea?</button>
+    <button id="m-scramble" data-mode="scramble" aria-pressed="false">🧩 Unscramble</button>
+    <button id="m-spell" data-mode="spell" aria-pressed="false">✏️ Spelling Test</button>
+  </nav>
+  <main class="card" id="card" aria-live="polite"></main>
+</div>
+
+<script type="application/json" id="clips">__CLIPS__</script>
+<script>
+const WORDS=[
+ {w:"feet", e:"🦶", s:"I wear socks on my two ___.", t:"Two feet, two e's: f<u>ee</u>t 🦶🦶", ts:"Two feet, two e's."},
+ {w:"deep", e:"🌊", s:"The water in the pool is very ___.", t:"Two eyes 👀 look down into the d<u>ee</u>p water.", ts:"Two eyes look down into the deep water. Two e's."},
+ {w:"sleep",e:"😴", s:"At night I go to ___ in my bed.", t:"Close your two eyes to sl<u>ee</u>p 😌 — two e's.", ts:"Close your two eyes to sleep. Two e's."},
+ {w:"week", e:"📅", s:"There are seven days in a ___.", t:"Every w<u>ee</u>k has two weekend days — two e's.", ts:"Every week has two weekend days. Two e's."},
+ {w:"bleed",e:"🩹", s:"If you cut your finger, it can ___.", t:"If you fall on your kn<u>ee</u>, it can bl<u>ee</u>d.", ts:"If you fall on your knee, it can bleed. Knee and bleed both have double e."},
+ {w:"beak", e:"🐦", s:"A bird eats with its ___.", t:"A bird <u>ea</u>ts with its b<u>ea</u>k.", ts:"A bird eats with its beak. Eat and beak both have e a."},
+ {w:"east", e:"🌅", s:"The sun comes up in the ___.", t:"The sun is up <u>ea</u>rly in the <u>ea</u>st.", ts:"The sun is up early in the east. Early and east both start with e a."},
+ {w:"steam",e:"♨️", s:"Hot tea makes white ___.", t:"St<u>ea</u>m comes from hot t<u>ea</u> ☕", ts:"Steam comes from hot tea. Tea and steam both have e a."},
+ {w:"seal", e:"🦭", s:"The ___ swims and claps its flippers.", t:"A s<u>ea</u>l lives in the s<u>ea</u> 🌊", ts:"A seal lives in the sea. Sea and seal both have e a."},
+ {w:"peas", e:"🫛", s:"Green ___ grow in a pod.", t:"I <u>ea</u>t my p<u>ea</u>s 🍽️", ts:"I eat my peas. Eat and peas both have e a."}
+];
+const card=document.getElementById('card');
+let stars=0, mode='learn', queue=[], idx=0, results=[];
+try{stars=+localStorage.getItem('ee-stars')||0}catch(e){}
+const starEl=document.getElementById('stars');
+function addStar(n=1){stars+=n;starEl.textContent='⭐ '+stars;starEl.classList.remove('pop');void starEl.offsetWidth;starEl.classList.add('pop');try{localStorage.setItem('ee-stars',stars)}catch(e){}}
+starEl.textContent='⭐ '+stars;
+
+/* Voice: pre-generated Kokoro neural TTS clips (voice af_heart), embedded in #clips as data URIs.
+   Keys: w_<word>, s_<word> (sentence), t_<word> (memory trick), l_<letter>, intro, p0-p3, perfect, almost, done10, score0-9 */
+let CLIPS={};try{CLIPS=JSON.parse(document.getElementById('clips').textContent)}catch(e){}
+let cur=null,chainId=0;
+function playKey(k){return new Promise(res=>{try{if(cur)cur.pause();if(!CLIPS[k])return res();const a=new Audio(CLIPS[k]);cur=a;a.onended=res;a.onerror=res;const pr=a.play();if(pr)pr.catch(res)}catch(e){res()}})}
+function sayChain(keys,onEach,done){const id=++chainId;(async()=>{for(let i=0;i<keys.length;i++){if(id!==chainId)return;onEach&&onEach(i);await playKey(keys[i]);if(id!==chainId)return;if(i<keys.length-1)await new Promise(r=>setTimeout(r,180))}done&&done()})()}
+function say(k){sayChain(Array.isArray(k)?k:[k])}
+
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const vowel=w=>w.includes('ee')?'ee':'ea';
+const colorWord=w=>{const v=vowel(w);return w.replace(v,`<span class="${v}-c">${v}</span>`)};
+const blank=s=>s.replace('___','<b>&nbsp;</b>');
+const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+
+document.querySelectorAll('.modes button').forEach(b=>b.onclick=()=>start(b.dataset.mode));
+
+function start(m){
+  mode=m;
+  document.querySelectorAll('.modes button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.mode===m));
+  if(m==='learn')return learn();
+  queue=shuffle(WORDS);idx=0;results=[];next();
+}
+function progress(){return '<div class="progress">'+queue.map((_,i)=>`<i class="${i<idx?(results[i]?'ok':'bad'):i===idx?'now':''}"></i>`).join('')+'</div>'}
+
+/* ---------- LEARN: look, say, cover, write, check ---------- */
+let learned=new Set();
+try{learned=new Set(JSON.parse(localStorage.getItem('ee-learned')||'[]'))}catch(e){}
+const saveLearned=()=>{try{localStorage.setItem('ee-learned',JSON.stringify([...learned]))}catch(e){}};
+const fill=s=>s.replace('___','');
+function teamCol(v){
+  return `<div class="team ${v}"><div class="team-h"><span class="${v}-c">${v}</span> team</div>
+  ${WORDS.map((x,i)=>vowel(x.w)===v?`<button class="lw" id="lw${i}" data-i="${i}"><span class="e">${x.e}</span><span class="lw-w">${colorWord(x.w)}</span><span class="tick">${learned.has(x.w)?'✅':''}</span></button>`:'').join('')}</div>`;
+}
+function learn(){
+  const n=learned.size, firstLeft=WORDS.findIndex(x=>!learned.has(x.w));
+  card.innerHTML=`<p class="big">Learn the words</p>
+  <p class="note">All 10 words make the long <b>e</b> sound, like in “m<b>e</b>”. It can be spelled two ways: <b class="ee-c">ee</b> or <b class="ea-c">ea</b>. We'll learn each word in 4 steps: <b>look</b>, <b>spell</b>, <b>cover &amp; write</b>, <b>check</b>.</p>
+  <button class="btn ghost" id="hearSound">🔊 Hear the long e sound</button>
+  <div class="teams">${teamCol('ee')}${teamCol('ea')}</div>
+  <p class="note"><b>${n} of 10</b> words learned${n===10?' — amazing! 🎉':''}</p>
+  ${n<10?`<button class="btn sun" id="go">${n?'Keep learning':'Start learning'} → ${WORDS[firstLeft].e} ${WORDS[firstLeft].w}</button>`
+        :`<div class="row"><button class="btn sun" id="play">Now play ee or ea? →</button><button class="btn ghost" id="reset">Learn again from the start</button></div>`}`;
+  document.getElementById('hearSound').onclick=()=>say('intro');
+  card.querySelectorAll('.lw').forEach(b=>b.onclick=()=>lesson(+b.dataset.i,1));
+  const go=document.getElementById('go');if(go)go.onclick=()=>lesson(firstLeft,1);
+  const pl=document.getElementById('play');if(pl)pl.onclick=()=>start('eeea');
+  const rs=document.getElementById('reset');if(rs)rs.onclick=()=>{learned.clear();saveLearned();learn()};
+}
+function stepBar(s){
+  return `<div class="steps">${['👀 Look','🗣️ Spell','✋ Cover & write','✔️ Check'].map((l,i)=>`<span class="${i+1===s?'on':i+1<s?'done':''}">${l}</span>`).join('')}</div>`;
+}
+function lessonTop(i,s){
+  return `<div class="ltop"><button class="btn ghost small" id="back">← All words</button><span class="note">Word ${i+1} of 10</span></div>${stepBar(s)}`;
+}
+function lesson(i,s,guess){
+  const x=WORDS[i], v=vowel(x.w);
+  window.scrollTo({top:0});
+  if(s===1){
+    card.innerHTML=`${lessonTop(i,1)}
+    <div class="emoji">${x.e}</div>
+    <div class="word big-word">${colorWord(x.w)}</div>
+    <p class="sentence"></p>
+    <div class="trick"><span class="trick-l">Memory trick</span>${x.t}</div>
+    <p class="note">Look closely at the word. Is it the <b class="ee-c">ee</b> team or the <b class="ea-c">ea</b> team? Say the word out loud 3 times.</p>
+    <div class="row"><button class="btn ghost" id="hear">🔊 Hear it</button><button class="btn" id="nx">Next: spell it →</button></div>`;
+    card.querySelector('.sentence').textContent=x.s.replace('___',x.w);
+    const read=()=>sayChain(['w_'+x.w,'s_'+x.w,'t_'+x.w]);
+    document.getElementById('hear').onclick=read;
+    setTimeout(read,250);
+    document.getElementById('nx').onclick=()=>lesson(i,2);
+  }
+  if(s===2){
+    card.innerHTML=`${lessonTop(i,2)}
+    <div class="emoji">${x.e}</div>
+    <div class="letters" id="letters">${x.w.split('').map((c,k)=>`<span class="${x.w.indexOf(v)<=k&&k<x.w.indexOf(v)+2?v+'-box':''}">${c}</span>`).join('')}</div>
+    <p class="note">Say each letter out loud with me, then say the whole word. Do it twice!</p>
+    <div class="row"><button class="btn sun" id="spellit">▶ Spell it with me</button><button class="btn" id="nx">Next: cover &amp; write →</button></div>`;
+    const boxes=[...document.querySelectorAll('#letters span')];
+    const run=()=>{
+      const items=['w_'+x.w,...x.w.split('').map(c=>'l_'+c),'w_'+x.w];
+      sayChain(items,k=>{boxes.forEach(b=>b.classList.remove('lit'));if(k>=1&&k<=x.w.length)boxes[k-1].classList.add('lit');if(k===items.length-1)boxes.forEach(b=>b.classList.add('lit'))},()=>setTimeout(()=>boxes.forEach(b=>b.classList.remove('lit')),900));
+    };
+    document.getElementById('spellit').onclick=run;
+    setTimeout(run,300);
+    document.getElementById('nx').onclick=()=>lesson(i,3);
+  }
+  if(s===3){
+    card.innerHTML=`${lessonTop(i,3)}
+    <div class="emoji">${x.e}</div>
+    <p class="sentence">${blank(esc(x.s))}</p>
+    <div class="letters covered">${x.w.split('').map(()=>'<span>?</span>').join('')}</div>
+    <p class="note">The word is covered! Write it from memory. It has <b>${x.w.length} letters</b>.</p>
+    <form id="f" class="row" autocomplete="off">
+      <label for="ans" class="note" style="width:100%">Type the word:</label>
+      <input class="spell" id="ans" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="12">
+      <button class="btn" type="submit" id="check">Check ✓</button>
+    </form>
+    <button class="btn ghost small" id="hear">🔊 Say it again</button>`;
+    const inp=document.getElementById('ans');setTimeout(()=>inp.focus(),100);
+    document.getElementById('hear').onclick=()=>{say('w_'+x.w);inp.focus()};
+    document.getElementById('f').onsubmit=e=>{e.preventDefault();const g=inp.value.trim().toLowerCase();if(g)lesson(i,4,g)};
+  }
+  if(s===4){
+    const ok=guess===x.w;
+    const len=Math.max(guess.length,x.w.length);
+    const row=(str,cls)=>`<div class="letters cmp">${Array.from({length:len},(_,k)=>{const c=str[k]||'';const good=guess[k]===x.w[k];return `<span class="${cls==='you'?(good?'good':'wrong'):''}">${esc(c)||'&nbsp;'}</span>`}).join('')}</div>`;
+    if(ok&&!learned.has(x.w)){learned.add(x.w);saveLearned();addStar()}
+    const nextI=WORDS.findIndex((y,k)=>k>i&&!learned.has(y.w)), anyLeft=WORDS.findIndex(y=>!learned.has(y.w));
+    const nx=nextI>=0?nextI:anyLeft;
+    card.innerHTML=`${lessonTop(i,4)}
+    <div class="feedback ${ok?'ok pop':'bad'}">${ok?'Perfect! You learned “'+x.w+'” ✅':'Nearly! Let\'s compare:'}</div>
+    <div class="cmpwrap"><span class="note">You wrote</span>${row(guess,'you')}<span class="note">The word</span>${row(x.w,'real')}</div>
+    ${ok?'':`<div class="trick"><span class="trick-l">Remember</span>${x.t}</div>`}
+    <div class="row">
+      ${ok?(nx>=0?`<button class="btn sun" id="nxw">Next word → ${WORDS[nx].e} ${WORDS[nx].w}</button>`:`<button class="btn sun" id="done">All 10 learned! 🎉</button>`)
+          :`<button class="btn ghost" id="look">👀 Look again</button><button class="btn" id="retry">✋ Try writing again</button>`}
+    </div>`;
+    say(ok?['perfect','w_'+x.w]:['w_'+x.w,'t_'+x.w]);
+    const q=id=>document.getElementById(id);
+    if(q('nxw'))q('nxw').onclick=()=>lesson(nx,1);
+    if(q('done'))q('done').onclick=learn;
+    if(q('look'))q('look').onclick=()=>lesson(i,1);
+    if(q('retry'))q('retry').onclick=()=>lesson(i,3);
+  }
+  document.getElementById('back').onclick=learn;
+}
+
+function next(){
+  if(idx>=queue.length)return finish();
+  const x=queue[idx];
+  ({eeea,scramble,spell})[mode](x);
+}
+function feedbackThen(ok,x,html){
+  results[idx]=ok; if(ok)addStar();
+  const f=card.querySelector('.feedback');
+  f.className='feedback '+(ok?'ok pop':'bad');
+  const r=Math.floor(Math.random()*4);
+  f.innerHTML=ok?['Great job! 🎉','Super! 🌟','You got it! 💪','Brilliant! ✨'][r]:'Almost! Look carefully:';
+  if(!ok){card.querySelector('.answer').innerHTML=html||colorWord(x.w);}
+  say(ok?['p'+r,'w_'+x.w]:['almost','w_'+x.w]);
+  const b=document.createElement('button');b.className='btn';b.id='next';b.textContent=idx<queue.length-1?'Next word →':'See my score →';
+  b.onclick=()=>{idx++;next()};card.appendChild(b);setTimeout(()=>b.focus(),50);
+}
+
+function eeea(x){
+  const v=vowel(x.w), parts=x.w.split(v);
+  card.innerHTML=`${progress()}<div class="emoji">${x.e}</div>
+  <p class="sentence">${blank(esc(x.s))}</p>
+  <div class="word"><span>${parts[0]}</span><span class="gap" id="gap">?</span><span>${parts[1]}</span></div>
+  <div class="row"><button class="choice ee" id="c-ee">ee</button><button class="choice ea" id="c-ea">ea</button></div>
+  <button class="btn ghost" id="hear">🔊 Hear it</button>
+  <div class="feedback"></div><div class="answer"></div>`;
+  document.getElementById('hear').onclick=()=>say('w_'+x.w);
+  ['ee','ea'].forEach(c=>document.getElementById('c-'+c).onclick=()=>{
+    card.querySelectorAll('.choice').forEach(b=>b.disabled=true);
+    const g=document.getElementById('gap');g.textContent=c;
+    const ok=c===v; g.style.color=ok?'var(--leaf)':'var(--berry)';
+    if(!ok)g.classList.add('shake');
+    feedbackThen(ok,x,`The word is <b>${colorWord(x.w)}</b> with <b>${v}</b>.`);
+  });
+}
+
+function scramble(x){
+  let letters=shuffle(x.w.split('').map((l,i)=>({l,i})));
+  if(letters.map(o=>o.l).join('')===x.w)letters=letters.reverse();
+  let picked=[];
+  card.innerHTML=`${progress()}<div class="emoji">${x.e}</div>
+  <p class="sentence">${blank(esc(x.s))}</p>
+  <div class="slots" id="slots">${x.w.split('').map(()=>'<span></span>').join('')}</div>
+  <div class="row" id="tiles">${letters.map((o,k)=>`<button class="tile" id="t${k}" data-k="${k}">${o.l}</button>`).join('')}</div>
+  <div class="row"><button class="btn ghost" id="hear">🔊 Hear it</button><button class="btn ghost" id="undo">↩ Undo</button></div>
+  <div class="feedback"></div><div class="answer"></div>`;
+  const slots=[...document.querySelectorAll('#slots span')];
+  document.getElementById('hear').onclick=()=>say('w_'+x.w);
+  const draw=()=>slots.forEach((s,i)=>s.textContent=picked[i]?letters[picked[i]].l:'');
+  document.getElementById('undo').onclick=()=>{const k=picked.pop();if(k!==undefined){document.getElementById('t'+k).disabled=false;draw()}};
+  card.querySelectorAll('.tile').forEach(t=>t.onclick=()=>{
+    t.disabled=true;picked.push(+t.dataset.k);draw();
+    if(picked.length===x.w.length){
+      card.querySelectorAll('.tile,#undo').forEach(b=>b.disabled=true);
+      const guess=picked.map(k=>letters[k].l).join('');
+      const ok=guess===x.w;
+      if(!ok)document.getElementById('slots').classList.add('shake');
+      feedbackThen(ok,x,`The word is <b>${colorWord(x.w)}</b>`);
+    }
+  });
+}
+
+function spell(x){
+  card.innerHTML=`${progress()}
+  <p class="note">Listen, then type the word. Use the picture and sentence if you need a clue.</p>
+  <button class="btn sun" id="hear">🔊 Say the word</button>
+  <div class="emoji">${x.e}</div>
+  <p class="sentence">${blank(esc(x.s))}</p>
+  <form id="f" class="row" autocomplete="off">
+    <label for="ans" class="note" style="width:100%">Type it here:</label>
+    <input class="spell" id="ans" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" inputmode="text" maxlength="12">
+    <button class="btn" type="submit" id="check">Check ✓</button>
+  </form>
+  <div class="feedback"></div><div class="answer"></div>`;
+  const inp=document.getElementById('ans');
+  document.getElementById('hear').onclick=()=>{say(['w_'+x.w,'s_'+x.w,'w_'+x.w]);inp.focus()};
+  setTimeout(()=>{say('w_'+x.w);inp.focus()},300);
+  document.getElementById('f').onsubmit=e=>{
+    e.preventDefault();
+    const g=inp.value.trim().toLowerCase(); if(!g)return;
+    inp.disabled=true;document.getElementById('check').disabled=true;
+    const ok=g===x.w;
+    inp.style.borderColor=ok?'var(--leaf)':'var(--berry)';
+    if(!ok)inp.classList.add('shake');
+    const mark=g.split('').map((c,i)=>c===x.w[i]?esc(c):`<span class="hl">${esc(c)}</span>`).join('');
+    feedbackThen(ok,x,`You wrote: <b>${mark}</b><br>Correct: <b>${colorWord(x.w)}</b>`);
+  };
+}
+
+function finish(){
+  const got=results.filter(Boolean).length, missed=queue.filter((_,i)=>!results[i]);
+  const bonus=got===queue.length?5:0; if(bonus)addStar(bonus);
+  const nextMode={eeea:'scramble',scramble:'spell',spell:'spell'}[mode];
+  const nextLabel={eeea:'Try Unscramble →',scramble:'Try the Spelling Test →',spell:'Take the test again →'}[mode];
+  card.innerHTML=`<div class="emoji pop">${got===10?'🏆':got>=7?'🌟':'💪'}</div>
+  <p class="big">${got} out of ${queue.length}</p>
+  <p class="note">${got===10?'Perfect score! +5 bonus stars.':got>=7?'Really good! Practise the ones below.':'Good effort. Keep practising these words:'}</p>
+  ${missed.length?`<div class="list">${missed.map(x=>`<button data-w="${x.w}"><span class="e">${x.e}</span>${colorWord(x.w)}</button>`).join('')}</div>`:''}
+  <div class="row"><button class="btn ghost" id="again">Play again</button><button class="btn sun" id="nx">${nextLabel}</button></div>`;
+  card.querySelectorAll('.list button').forEach(b=>b.onclick=()=>say('w_'+b.dataset.w));
+  document.getElementById('again').onclick=()=>start(mode);
+  document.getElementById('nx').onclick=()=>start(nextMode);
+  say(got===10?'done10':'score'+got);
+}
+learn();
+</script>

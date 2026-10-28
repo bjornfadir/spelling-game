@@ -1,0 +1,242 @@
+{
+"w_feet": [
+"feet",
+0.8
+],
+"s_feet": [
+"I wear socks on my two feet.",
+0.85
+],
+"t_feet": [
+"Two feet, two e's.",
+0.85
+],
+"w_deep": [
+"deep",
+0.8
+],
+"s_deep": [
+"The water in the pool is very deep.",
+0.85
+],
+"t_deep": [
+"Two eyes look down into the deep water. Two e's.",
+0.85
+],
+"w_sleep": [
+"sleep",
+0.8
+],
+"s_sleep": [
+"At night I go to sleep in my bed.",
+0.85
+],
+"t_sleep": [
+"Close your two eyes to sleep. Two e's.",
+0.85
+],
+"w_week": [
+"week",
+0.8
+],
+"s_week": [
+"There are seven days in a week.",
+0.85
+],
+"t_week": [
+"Every week has two weekend days. Two e's.",
+0.85
+],
+"w_bleed": [
+"bleed",
+0.8
+],
+"s_bleed": [
+"If you cut your finger, it can bleed.",
+0.85
+],
+"t_bleed": [
+"If you fall on your knee, it can bleed. Knee and bleed both have double e.",
+0.85
+],
+"w_beak": [
+"beak",
+0.8
+],
+"s_beak": [
+"A bird eats with its beak.",
+0.85
+],
+"t_beak": [
+"A bird eats with its beak. Eat and beak both have e, a.",
+0.85
+],
+"w_east": [
+"east",
+0.8
+],
+"s_east": [
+"The sun comes up in the east.",
+0.85
+],
+"t_east": [
+"The sun is up early in the east. Early and east both start with e, a.",
+0.85
+],
+"w_steam": [
+"steam",
+0.8
+],
+"s_steam": [
+"Hot tea makes white steam.",
+0.85
+],
+"t_steam": [
+"Steam comes from hot tea. Tea and steam both have e, a.",
+0.85
+],
+"w_seal": [
+"seal",
+0.8
+],
+"s_seal": [
+"The seal swims and claps its flippers.",
+0.85
+],
+"t_seal": [
+"A seal lives in the sea. Sea and seal both have e, a.",
+0.85
+],
+"w_peas": [
+"peas",
+0.8
+],
+"s_peas": [
+"Green peas grow in a pod.",
+0.85
+],
+"t_peas": [
+"I eat my peas. Eat and peas both have e, a.",
+0.85
+],
+"l_a": [
+"A",
+0.85
+],
+"l_b": [
+"bee",
+0.85
+],
+"l_d": [
+"dee",
+0.85
+],
+"l_e": [
+"ee",
+0.85
+],
+"l_f": [
+"ef",
+0.85
+],
+"l_k": [
+"kay",
+0.85
+],
+"l_l": [
+"el",
+0.85
+],
+"l_m": [
+"em",
+0.85
+],
+"l_p": [
+"pee",
+0.85
+],
+"l_s": [
+"ess",
+0.85
+],
+"l_t": [
+"tee",
+0.85
+],
+"l_w": [
+"double you",
+0.85
+],
+"intro": [
+"Ee. Ee. The long e sound, like in me, see, and tree.",
+0.8
+],
+"p0": [
+"Great job!",
+0.9
+],
+"p1": [
+"Super!",
+0.9
+],
+"p2": [
+"You got it!",
+0.9
+],
+"p3": [
+"Brilliant!",
+0.9
+],
+"perfect": [
+"Perfect!",
+0.9
+],
+"almost": [
+"Almost! Look carefully.",
+0.9
+],
+"done10": [
+"Perfect score! Well done!",
+0.9
+],
+"score0": [
+"You got zero out of ten. Well done!",
+0.9
+],
+"score1": [
+"You got one out of ten. Well done!",
+0.9
+],
+"score2": [
+"You got two out of ten. Well done!",
+0.9
+],
+"score3": [
+"You got three out of ten. Well done!",
+0.9
+],
+"score4": [
+"You got four out of ten. Well done!",
+0.9
+],
+"score5": [
+"You got five out of ten. Well done!",
+0.9
+],
+"score6": [
+"You got six out of ten. Well done!",
+0.9
+],
+"score7": [
+"You got seven out of ten. Well done!",
+0.9
+],
+"score8": [
+"You got eight out of ten. Well done!",
+0.9
+],
+"score9": [
+"You got nine out of ten. Well done!",
+0.9
+]
+}
