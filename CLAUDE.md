@@ -2,7 +2,9 @@
 
 A browser spelling game Adam built for his daughter (9, in Israel; English is a second language) to learn the 10 words on her spelling test. This file is the handoff so Claude Code can continue the project.
 
-Live version (claude.ai artifact, private to Adam): https://claude.ai/artifact/HMZuhNj75BjmPoLAujcqki
+Public version (for Hadassah and her classmates): https://bjornfadir.github.io/spelling-game/ , served by GitHub Pages from the public repo `bjornfadir/spelling-game`. `.github/workflows/pages.yml` publishes `dist/` on every push to `main` and does not build, so run `python3 build.py` and commit `dist/` before pushing. Keep the repo free of personal details, because it is public.
+
+Older claude.ai artifact copy (private to Adam, no longer updated): https://claude.ai/artifact/HMZuhNj75BjmPoLAujcqki
 
 ## The words
 
@@ -40,7 +42,7 @@ Plain HTML, CSS and vanilla JS in one file. No framework and no build step beyon
 1. **📖 Learn** — the main teaching flow. A start screen shows the ee team and ea team with a ✅ for each learned word. Each word then goes through 4 steps (`lesson(i, step)`):
    1. Look — big word with the vowel pair coloured, the sentence and the memory trick, read aloud.
    2. Spell — letter boxes light up one at a time as each letter name is spoken (`l_<letter>` clips).
-   3. Cover & write — the word is hidden and she types it from memory.
+   3. Cover & write — the word is hidden and she types it from memory. Typing uses an on-screen QWERTY keyboard (`keyboard()` / `wireKeys()`). The input has `inputmode="none"`, so the device keyboard and autocorrect stay hidden, and a physical keyboard still works. The Spelling Test uses the same keyboard and removes it once an answer is checked.
    4. Check — her letters are compared with the word's, marked green or red. A correct answer marks the word learned (`localStorage` key `ee-learned`) and earns a star. A wrong one offers "Look again" or "Try writing again".
 2. **🔤 ee or ea?** — "f _ _ t": pick ee or ea.
 3. **🧩 Unscramble** — tap jumbled letter tiles in order (with Undo).
@@ -92,7 +94,6 @@ Adam also has his own voice engine at `https://odin-cloud.tail177352.ts.net/`, o
 - Support several word lists (one per week) with a picker, keeping progress per list.
 - A parent view showing which words were missed most often across sessions.
 - Spaced review: bring missed words back sooner in later rounds.
-- On-screen letter keyboard for the typing steps (right now it relies on the device keyboard).
 - Hebrew translations or hints for each word, if helpful.
 
 ## Constraints if it is republished as a claude.ai artifact

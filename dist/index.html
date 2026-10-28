@@ -94,6 +94,15 @@ input.spell{font-family:var(--body);font-size:2.2rem;font-weight:700;letter-spac
 @keyframes pop{0%{transform:scale(.6)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
 .pop{animation:pop .4s ease} .shake{animation:shake .3s ease 2}
+/* On-screen keyboard: all 26 letters (so it gives no hints), QWERTY rows, big tall keys */
+.kb{display:flex;flex-direction:column;gap:6px;width:100%;max-width:520px;user-select:none;-webkit-user-select:none}
+.kb-r{display:flex;gap:4px;justify-content:center}
+.key{flex:1;max-width:48px;height:52px;padding:0;border-radius:10px;border:2px solid var(--line);background:var(--soft);color:var(--ink);font-family:var(--body);font-weight:700;font-size:1.5rem;cursor:pointer;touch-action:manipulation}
+.key:active{background:var(--sun);border-color:var(--sun);color:#3a2800}
+.key.wide{flex:1.6;max-width:76px;font-size:1.3rem}
+.key:disabled{opacity:.4;cursor:default}
+.key:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+@media (max-width:440px){.card{padding-inline:10px}.key{height:48px;font-size:1.3rem}}
 @media (prefers-reduced-motion:reduce){.pop,.shake{animation:none}}
 </style>
 
@@ -151,6 +160,18 @@ const vowel=w=>w.includes('ee')?'ee':'ea';
 const colorWord=w=>{const v=vowel(w);return w.replace(v,`<span class="${v}-c">${v}</span>`)};
 const blank=s=>s.replace('___','<b>&nbsp;</b>');
 const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+/* On-screen keyboard for the typing steps. The input keeps inputmode="none" so the device
+   keyboard (and its autocorrect) stays hidden; a physical keyboard still types normally. */
+const keyboard=()=>`<div class="kb" id="kb" aria-label="Letter keyboard">${['qwertyuiop','asdfghjkl','zxcvbnm'].map((r,k)=>`<div class="kb-r">${r.split('').map(c=>`<button type="button" class="key" data-c="${c}">${c}</button>`).join('')}${k===2?'<button type="button" class="key wide" data-c="back" aria-label="Delete">⌫</button>':''}</div>`).join('')}</div>`;
+function wireKeys(inp){
+  card.querySelectorAll('#kb .key').forEach(b=>b.onclick=()=>{
+    if(inp.disabled)return;
+    const c=b.dataset.c;
+    if(c==='back')inp.value=inp.value.slice(0,-1);
+    else if(inp.value.length<+inp.maxLength)inp.value+=c;
+  });
+}
+const lockKeys=()=>{const kb=document.getElementById('kb');if(kb)kb.remove()}; /* after checking, make room for the feedback */
 
 document.querySelectorAll('.modes button').forEach(b=>b.onclick=()=>start(b.dataset.mode));
 
@@ -233,11 +254,12 @@ function lesson(i,s,guess){
     <p class="note">The word is covered! Write it from memory. It has <b>${x.w.length} letters</b>.</p>
     <form id="f" class="row" autocomplete="off">
       <label for="ans" class="note" style="width:100%">Type the word:</label>
-      <input class="spell" id="ans" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="12">
+      <input class="spell" id="ans" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" inputmode="none" maxlength="12">
       <button class="btn" type="submit" id="check">Check ✓</button>
     </form>
+    ${keyboard()}
     <button class="btn ghost small" id="hear">🔊 Say it again</button>`;
-    const inp=document.getElementById('ans');setTimeout(()=>inp.focus(),100);
+    const inp=document.getElementById('ans');setTimeout(()=>inp.focus(),100);wireKeys(inp);
     document.getElementById('hear').onclick=()=>{say('w_'+x.w);inp.focus()};
     document.getElementById('f').onsubmit=e=>{e.preventDefault();const g=inp.value.trim().toLowerCase();if(g)lesson(i,4,g)};
   }
@@ -336,17 +358,18 @@ function spell(x){
   <p class="sentence">${blank(esc(x.s))}</p>
   <form id="f" class="row" autocomplete="off">
     <label for="ans" class="note" style="width:100%">Type it here:</label>
-    <input class="spell" id="ans" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" inputmode="text" maxlength="12">
+    <input class="spell" id="ans" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" inputmode="none" maxlength="12">
     <button class="btn" type="submit" id="check">Check ✓</button>
   </form>
+  ${keyboard()}
   <div class="feedback" role="status"></div><div class="answer"></div>`;
-  const inp=document.getElementById('ans');
+  const inp=document.getElementById('ans');wireKeys(inp);
   document.getElementById('hear').onclick=()=>{say(['w_'+x.w,'s_'+x.w,'w_'+x.w]);inp.focus()};
   later(()=>{say('w_'+x.w);inp.focus()},300);
   document.getElementById('f').onsubmit=e=>{
     e.preventDefault();
     const g=inp.value.trim().toLowerCase(); if(!g)return;
-    inp.disabled=true;document.getElementById('check').disabled=true;
+    inp.disabled=true;document.getElementById('check').disabled=true;lockKeys();
     const ok=g===x.w;
     inp.style.borderColor=ok?'var(--leaf)':'var(--berry)';
     if(!ok)inp.classList.add('shake');
