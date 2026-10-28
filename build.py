@@ -1,7 +1,7 @@
 """Inject the generated voice clips into src/game.html -> dist/index.html."""
-import json, pathlib
+import json, pathlib, sys
 root = pathlib.Path(__file__).parent
-voice = "af_heart"
+voice = sys.argv[1] if len(sys.argv) > 1 else "af_heart"  # reads tts/audio_<voice>.json
 clips = json.loads((root / f"tts/audio_{voice}.json").read_text())
 html = (root / "src/game.html").read_text()
 assert "__CLIPS__" in html
