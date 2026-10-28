@@ -8,7 +8,7 @@
 0.85
 ],
 "t_feet": [
-"Two feet, two e's.",
+"Two feet, two E's.",
 0.85
 ],
 "w_deep": [
@@ -56,7 +56,7 @@
 0.85
 ],
 "t_bleed": [
-"If you fall on your knee, it can bleed. Knee and bleed both have double e.",
+"If you fall on your knee, it can bleed. Knee and bleed both have double E.",
 0.85
 ],
 "w_beak": [
@@ -68,7 +68,7 @@
 0.85
 ],
 "t_beak": [
-"A bird eats with its beak. Eat and beak both have e, a.",
+"A bird eats with its beak. Eat and beak both have E, A.",
 0.85
 ],
 "w_east": [
@@ -80,7 +80,7 @@
 0.85
 ],
 "t_east": [
-"The sun is up early in the east. Early and east both start with e, a.",
+"The sun is up early in the east. Early and east both start with E, A.",
 0.85
 ],
 "w_steam": [
@@ -92,7 +92,7 @@
 0.85
 ],
 "t_steam": [
-"Steam comes from hot tea. Tea and steam both have e, a.",
+"Steam comes from hot tea. Tea and steam both have E, A.",
 0.85
 ],
 "w_seal": [
@@ -104,7 +104,7 @@
 0.85
 ],
 "t_seal": [
-"A seal lives in the sea. Sea and seal both have e, a.",
+"A seal lives in the sea. Sea and seal both have E, A.",
 0.85
 ],
 "w_peas": [
@@ -116,60 +116,60 @@
 0.85
 ],
 "t_peas": [
-"I eat my peas. Eat and peas both have e, a.",
+"I eat my peas. Eat and peas both have E, A.",
 0.85
 ],
 "l_a": [
-"A",
+"A.",
 0.85
 ],
 "l_b": [
-"bee",
+"B.",
 0.85
 ],
 "l_d": [
-"dee",
+"D.",
 0.85
 ],
 "l_e": [
-"ee",
+"E.",
 0.85
 ],
 "l_f": [
-"ef",
+"F.",
 0.85
 ],
 "l_k": [
-"kay",
+"K.",
 0.85
 ],
 "l_l": [
-"el",
+"L.",
 0.85
 ],
 "l_m": [
-"em",
+"M.",
 0.85
 ],
 "l_p": [
-"pee",
+"P.",
 0.85
 ],
 "l_s": [
-"ess",
+"S.",
 0.85
 ],
 "l_t": [
-"tee",
+"T.",
 0.85
 ],
 "l_w": [
-"double you",
+"W.",
 0.85
 ],
 "intro": [
-"Listen to the long e sound: eee. Like in me, see, and tree.",
-0.8
+"Listen to the long E sound! <break time=\"0.3s\" /> Eee! <break time=\"0.4s\" /> Like in: me, <break time=\"0.25s\" /> see, <break time=\"0.25s\" /> and tree!",
+1.0
 ],
 "p0": [
 "Great job!",

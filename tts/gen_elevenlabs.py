@@ -6,8 +6,9 @@
 The API key comes from $ELEVENLABS_API_KEY or ~/.config/elevenlabs/api_key (chmod 600,
 outside the repo; never commit it). The current key is restricted to text-to-speech,
 so it cannot list voices or read the quota: pick voice ids from the ElevenLabs voice library.
-Each clip is cached as out_el_<name>/<key>.mp3, so re-runs only spend characters on
-clips that are missing (delete one .mp3 to re-render it). The whole list is ~1,400 characters.
+Each clip is cached as out_el_<name>/<key>.mp3, with the text it was rendered from in
+out_el_<name>/texts.json, so re-runs only spend characters on clips that are new or whose
+spoken text changed in mkclips.py (delete one .mp3 to force a re-render). The whole list is ~1,400 characters.
 Stdlib only, no ffmpeg needed: ElevenLabs returns MP3 directly.
 """
 import argparse, base64, json, os, pathlib, time, urllib.error, urllib.request
@@ -39,13 +40,16 @@ def tts(text):
             raise SystemExit(f"ElevenLabs {e.code}: {msg}")
 
 only = set(a.only.split(",")) if a.only else None
+manifest = out / "texts.json"
+done = json.loads(manifest.read_text()) if manifest.exists() else {}
 for k, (text, _speed) in clips.items():
     if only and k not in only: continue
     mp3 = out / f"{k}.mp3"
-    if mp3.exists(): continue
-    # Letter names: the capital letter reads as its name ("B."); Kokoro's phonetic spellings ("bee") don't help here
-    if k.startswith("l_"): text = k[2:].upper() + "."
-    mp3.write_bytes(tts(text)); print(f"{k:12s} {text}", flush=True)
+    # clips rendered before texts.json existed have no entry; trust them rather than re-pay
+    if mp3.exists() and done.get(k, text) == text: done[k] = text; continue
+    mp3.write_bytes(tts(text)); done[k] = text; print(f"{k:12s} {text}", flush=True)
+    manifest.write_text(json.dumps(done, indent=0))
+manifest.write_text(json.dumps(done, indent=0))
 
 if not only:
     missing = [k for k in clips if not (out / f"{k}.mp3").exists()]
