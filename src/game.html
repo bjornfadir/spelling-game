@@ -1,4 +1,9 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Long E Spelling Quest</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⭐</text></svg>">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Andika:wght@400;700&display=swap">
 <style>
@@ -6,26 +11,29 @@
 :root{
   --bg:#eaf6f4; --card:#ffffff; --ink:#173a3a; --muted:#5b7a78;
   --sea:#1f8a83; --sun:#f3a712; --berry:#d6456b; --leaf:#3c9d4e; --line:#cfe5e1; --soft:#f3faf8;
+  --sun-ink:#9a5b00; --on-sea:#ffffff; /* sun-ink: readable ea-team text; --sun stays for fills and borders */
   --display:"Baloo 2","Trebuchet MS",system-ui,sans-serif;
   --body:"Andika","Verdana",system-ui,sans-serif;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#0f2222; --card:#163030; --ink:#e6f4f1; --muted:#9dbdb8;
-  --sea:#4cc3b9; --sun:#f6bd45; --berry:#f0708f; --leaf:#6cc97c; --line:#264646; --soft:#1b3a3a; color-scheme:dark}}
+  --sea:#4cc3b9; --sun:#f6bd45; --berry:#f0708f; --leaf:#6cc97c; --line:#264646; --soft:#1b3a3a;
+  --sun-ink:#f6bd45; --on-sea:#0f2222; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#0f2222; --card:#163030; --ink:#e6f4f1; --muted:#9dbdb8;
-  --sea:#4cc3b9; --sun:#f6bd45; --berry:#f0708f; --leaf:#6cc97c; --line:#264646; --soft:#1b3a3a; color-scheme:dark}
+  --sea:#4cc3b9; --sun:#f6bd45; --berry:#f0708f; --leaf:#6cc97c; --line:#264646; --soft:#1b3a3a;
+  --sun-ink:#f6bd45; --on-sea:#0f2222; color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:18px;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
 .wrap{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
 header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 h1{font-family:var(--display);font-weight:800;font-size:2rem;line-height:1;margin:0;text-wrap:balance}
-h1 .ee{color:var(--sea)} h1 .ea{color:var(--sun)}
-.stars{font-family:var(--display);font-size:1.3rem;font-weight:800;color:var(--sun);font-variant-numeric:tabular-nums}
+h1 .ee{color:var(--sea)} h1 .ea{color:var(--sun-ink)}
+.stars{font-family:var(--display);font-size:1.3rem;font-weight:800;color:var(--sun-ink);font-variant-numeric:tabular-nums}
 .modes{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .modes button{font-family:var(--display);font-weight:600;font-size:1rem;padding:10px 6px;border-radius:14px;border:2px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;line-height:1.15}
-.modes button[aria-pressed="true"]{border-color:var(--sea);background:var(--sea);color:var(--card)}
+.modes button[aria-pressed="true"]{border-color:var(--sea);background:var(--sea);color:var(--on-sea)}
 @media (max-width:480px){.modes{grid-template-columns:repeat(2,1fr)}}
 .card{background:var(--card);border:2px solid var(--line);border-radius:24px;padding:24px 20px;display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center;min-height:380px}
 .progress{width:100%;display:flex;gap:6px}
@@ -34,13 +42,13 @@ h1 .ee{color:var(--sea)} h1 .ea{color:var(--sun)}
 .emoji{font-size:3.4rem;line-height:1}
 .sentence{font-size:1.25rem;line-height:1.5;max-width:30ch}
 .sentence b{display:inline-block;min-width:3.5em;border-bottom:3px solid var(--sea);color:var(--sea)}
-.btn{font-family:var(--display);font-weight:800;font-size:1.2rem;border:none;border-radius:16px;padding:12px 22px;cursor:pointer;color:#fff;background:var(--sea)}
+.btn{font-family:var(--display);font-weight:800;font-size:1.2rem;border:none;border-radius:16px;padding:12px 22px;cursor:pointer;color:var(--on-sea);background:var(--sea)}
 .btn.sun{background:var(--sun);color:#3a2800} .btn.ghost{background:var(--soft);color:var(--ink);border:2px solid var(--line)}
 .btn:focus-visible,.modes button:focus-visible,.tile:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
 .row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
 input.spell{font-family:var(--body);font-size:2.2rem;font-weight:700;letter-spacing:.12em;text-align:center;width:100%;max-width:320px;padding:10px;border-radius:16px;border:3px solid var(--line);background:var(--soft);color:var(--ink)}
 .word{font-family:var(--body);font-weight:700;font-size:3rem;letter-spacing:.08em;display:flex;gap:4px;justify-content:center;flex-wrap:wrap}
-.word span.gap{min-width:1.6em;border-bottom:4px solid var(--sun);color:var(--sun)}
+.word span.gap{min-width:1.6em;border-bottom:4px solid var(--sun);color:var(--sun-ink)}
 .choice{font-family:var(--body);font-weight:700;font-size:2.4rem;min-width:130px;padding:10px 20px;border-radius:20px;border:3px solid var(--line);background:var(--soft);color:var(--ink);cursor:pointer}
 .choice.ee{border-color:var(--sea)} .choice.ea{border-color:var(--sun)}
 .tile{font-family:var(--body);font-weight:700;font-size:1.8rem;width:56px;height:56px;border-radius:14px;border:3px solid var(--line);background:var(--soft);color:var(--ink);cursor:pointer}
@@ -51,10 +59,11 @@ input.spell{font-family:var(--body);font-size:2.2rem;font-weight:700;letter-spac
 .feedback.ok{color:var(--leaf)} .feedback.bad{color:var(--berry)}
 .answer{font-size:1.3rem} .answer .hl{color:var(--berry);text-decoration:underline}
 .note{color:var(--muted);font-size:.95rem;max-width:44ch;line-height:1.5}
-.list{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;width:100%}
+.list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;width:100%}
+@media (max-width:440px){.list button{font-size:1.25rem;padding:8px 10px}}
 .list button{display:flex;align-items:center;gap:10px;font-family:var(--body);font-weight:700;font-size:1.5rem;padding:10px 14px;border-radius:16px;border:2px solid var(--line);background:var(--soft);color:var(--ink);cursor:pointer;text-align:left}
 .list .e{font-size:1.6rem}
-.ee-c{color:var(--sea)} .ea-c{color:var(--sun)}
+.ee-c{color:var(--sea)} .ea-c{color:var(--sun-ink)}
 .big{font-family:var(--display);font-size:2.4rem;font-weight:800;margin:0}
 .btn.small{font-size:1rem;padding:8px 14px}
 .teams{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%}
@@ -67,7 +76,7 @@ input.spell{font-family:var(--body);font-size:2.2rem;font-weight:700;letter-spac
 .ltop{width:100%;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
 .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;width:100%}
 .steps span{font-family:var(--display);font-weight:600;font-size:.85rem;padding:6px 4px;border-radius:10px;background:var(--soft);color:var(--muted);border:2px solid var(--line);line-height:1.15}
-.steps span.on{background:var(--sea);border-color:var(--sea);color:var(--card)}
+.steps span.on{background:var(--sea);border-color:var(--sea);color:var(--on-sea)}
 .steps span.done{color:var(--leaf);border-color:var(--leaf)}
 .big-word{font-size:4rem}
 .trick{background:var(--soft);border:2px dashed var(--sun);border-radius:16px;padding:12px 16px;font-size:1.15rem;line-height:1.5;max-width:34ch;display:flex;flex-direction:column;gap:4px}
@@ -75,7 +84,7 @@ input.spell{font-family:var(--body);font-size:2.2rem;font-weight:700;letter-spac
 .trick-l{font-family:var(--display);font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .letters{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
 .letters span{width:60px;height:72px;border-radius:14px;border:3px solid var(--line);background:var(--soft);display:flex;align-items:center;justify-content:center;font-family:var(--body);font-weight:700;font-size:2.4rem;transition:transform .15s,background .15s}
-.letters .ee-box{border-color:var(--sea);color:var(--sea)} .letters .ea-box{border-color:var(--sun);color:var(--sun)}
+.letters .ee-box{border-color:var(--sea);color:var(--sea)} .letters .ea-box{border-color:var(--sun);color:var(--sun-ink)}
 .letters span.lit{background:var(--sun);color:#3a2800;transform:translateY(-6px) scale(1.08);border-color:var(--sun)}
 .letters.covered span{color:var(--muted);background:var(--line)}
 .letters.cmp span{width:48px;height:56px;font-size:1.9rem}
@@ -99,7 +108,7 @@ input.spell{font-family:var(--body);font-size:2.2rem;font-weight:700;letter-spac
     <button id="m-scramble" data-mode="scramble" aria-pressed="false">🧩 Unscramble</button>
     <button id="m-spell" data-mode="spell" aria-pressed="false">✏️ Spelling Test</button>
   </nav>
-  <main class="card" id="card" aria-live="polite"></main>
+  <main class="card" id="card"></main>
 </div>
 
 <script type="application/json" id="clips">__CLIPS__</script>
@@ -126,8 +135,14 @@ starEl.textContent='⭐ '+stars;
 /* Voice: pre-generated Kokoro neural TTS clips (voice af_heart), embedded in #clips as data URIs.
    Keys: w_<word>, s_<word> (sentence), t_<word> (memory trick), l_<letter>, intro, p0-p3, perfect, almost, done10, score0-9 */
 let CLIPS={};try{CLIPS=JSON.parse(document.getElementById('clips').textContent)}catch(e){}
-let cur=null,chainId=0;
-function playKey(k){return new Promise(res=>{try{if(cur)cur.pause();if(!CLIPS[k])return res();const a=new Audio(CLIPS[k]);cur=a;a.onended=res;a.onerror=res;const pr=a.play();if(pr)pr.catch(res)}catch(e){res()}})}
+/* One shared <audio>: iOS only lets an element play outside a tap once a tap has played it,
+   and chained clips run after awaits, so a fresh Audio() per clip can be blocked. */
+const player=new Audio();let chainId=0,pending=null;
+function playKey(k){return new Promise(res=>{try{if(pending)pending();pending=res;if(!CLIPS[k])return res();player.onended=player.onerror=res;player.src=CLIPS[k];const pr=player.play();if(pr)pr.catch(res)}catch(e){res()}})}
+/* Stop speech and cancel delayed auto-play when the screen changes */
+let autoT=[];
+function later(f,ms){autoT.push(setTimeout(f,ms))}
+function hush(){chainId++;autoT.forEach(clearTimeout);autoT=[];try{player.pause()}catch(e){}if(pending){const p=pending;pending=null;p()}}
 function sayChain(keys,onEach,done){const id=++chainId;(async()=>{for(let i=0;i<keys.length;i++){if(id!==chainId)return;onEach&&onEach(i);await playKey(keys[i]);if(id!==chainId)return;if(i<keys.length-1)await new Promise(r=>setTimeout(r,180))}done&&done()})()}
 function say(k){sayChain(Array.isArray(k)?k:[k])}
 
@@ -140,7 +155,7 @@ const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 document.querySelectorAll('.modes button').forEach(b=>b.onclick=()=>start(b.dataset.mode));
 
 function start(m){
-  mode=m;
+  hush();mode=m;
   document.querySelectorAll('.modes button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.mode===m));
   if(m==='learn')return learn();
   queue=shuffle(WORDS);idx=0;results=[];next();
@@ -157,6 +172,7 @@ function teamCol(v){
   ${WORDS.map((x,i)=>vowel(x.w)===v?`<button class="lw" id="lw${i}" data-i="${i}"><span class="e">${x.e}</span><span class="lw-w">${colorWord(x.w)}</span><span class="tick">${learned.has(x.w)?'✅':''}</span></button>`:'').join('')}</div>`;
 }
 function learn(){
+  hush();
   const n=learned.size, firstLeft=WORDS.findIndex(x=>!learned.has(x.w));
   card.innerHTML=`<p class="big">Learn the words</p>
   <p class="note">All 10 words make the long <b>e</b> sound, like in “m<b>e</b>”. It can be spelled two ways: <b class="ee-c">ee</b> or <b class="ea-c">ea</b>. We'll learn each word in 4 steps: <b>look</b>, <b>spell</b>, <b>cover &amp; write</b>, <b>check</b>.</p>
@@ -179,7 +195,7 @@ function lessonTop(i,s){
 }
 function lesson(i,s,guess){
   const x=WORDS[i], v=vowel(x.w);
-  window.scrollTo({top:0});
+  hush();window.scrollTo({top:0});
   if(s===1){
     card.innerHTML=`${lessonTop(i,1)}
     <div class="emoji">${x.e}</div>
@@ -191,7 +207,7 @@ function lesson(i,s,guess){
     card.querySelector('.sentence').textContent=x.s.replace('___',x.w);
     const read=()=>sayChain(['w_'+x.w,'s_'+x.w,'t_'+x.w]);
     document.getElementById('hear').onclick=read;
-    setTimeout(read,250);
+    later(read,250);
     document.getElementById('nx').onclick=()=>lesson(i,2);
   }
   if(s===2){
@@ -206,7 +222,7 @@ function lesson(i,s,guess){
       sayChain(items,k=>{boxes.forEach(b=>b.classList.remove('lit'));if(k>=1&&k<=x.w.length)boxes[k-1].classList.add('lit');if(k===items.length-1)boxes.forEach(b=>b.classList.add('lit'))},()=>setTimeout(()=>boxes.forEach(b=>b.classList.remove('lit')),900));
     };
     document.getElementById('spellit').onclick=run;
-    setTimeout(run,300);
+    later(run,300);
     document.getElementById('nx').onclick=()=>lesson(i,3);
   }
   if(s===3){
@@ -233,7 +249,7 @@ function lesson(i,s,guess){
     const nextI=WORDS.findIndex((y,k)=>k>i&&!learned.has(y.w)), anyLeft=WORDS.findIndex(y=>!learned.has(y.w));
     const nx=nextI>=0?nextI:anyLeft;
     card.innerHTML=`${lessonTop(i,4)}
-    <div class="feedback ${ok?'ok pop':'bad'}">${ok?'Perfect! You learned “'+x.w+'” ✅':'Nearly! Let\'s compare:'}</div>
+    <div class="feedback ${ok?'ok pop':'bad'}" role="status">${ok?'Perfect! You learned “'+x.w+'” ✅':'Nearly! Let\'s compare:'}</div>
     <div class="cmpwrap"><span class="note">You wrote</span>${row(guess,'you')}<span class="note">The word</span>${row(x.w,'real')}</div>
     ${ok?'':`<div class="trick"><span class="trick-l">Remember</span>${x.t}</div>`}
     <div class="row">
@@ -251,6 +267,7 @@ function lesson(i,s,guess){
 }
 
 function next(){
+  hush();
   if(idx>=queue.length)return finish();
   const x=queue[idx];
   ({eeea,scramble,spell})[mode](x);
@@ -274,7 +291,7 @@ function eeea(x){
   <div class="word"><span>${parts[0]}</span><span class="gap" id="gap">?</span><span>${parts[1]}</span></div>
   <div class="row"><button class="choice ee" id="c-ee">ee</button><button class="choice ea" id="c-ea">ea</button></div>
   <button class="btn ghost" id="hear">🔊 Hear it</button>
-  <div class="feedback"></div><div class="answer"></div>`;
+  <div class="feedback" role="status"></div><div class="answer"></div>`;
   document.getElementById('hear').onclick=()=>say('w_'+x.w);
   ['ee','ea'].forEach(c=>document.getElementById('c-'+c).onclick=()=>{
     card.querySelectorAll('.choice').forEach(b=>b.disabled=true);
@@ -294,7 +311,7 @@ function scramble(x){
   <div class="slots" id="slots">${x.w.split('').map(()=>'<span></span>').join('')}</div>
   <div class="row" id="tiles">${letters.map((o,k)=>`<button class="tile" id="t${k}" data-k="${k}">${o.l}</button>`).join('')}</div>
   <div class="row"><button class="btn ghost" id="hear">🔊 Hear it</button><button class="btn ghost" id="undo">↩ Undo</button></div>
-  <div class="feedback"></div><div class="answer"></div>`;
+  <div class="feedback" role="status"></div><div class="answer"></div>`;
   const slots=[...document.querySelectorAll('#slots span')];
   document.getElementById('hear').onclick=()=>say('w_'+x.w);
   const draw=()=>slots.forEach((s,i)=>s.textContent=picked[i]?letters[picked[i]].l:'');
@@ -322,10 +339,10 @@ function spell(x){
     <input class="spell" id="ans" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" inputmode="text" maxlength="12">
     <button class="btn" type="submit" id="check">Check ✓</button>
   </form>
-  <div class="feedback"></div><div class="answer"></div>`;
+  <div class="feedback" role="status"></div><div class="answer"></div>`;
   const inp=document.getElementById('ans');
   document.getElementById('hear').onclick=()=>{say(['w_'+x.w,'s_'+x.w,'w_'+x.w]);inp.focus()};
-  setTimeout(()=>{say('w_'+x.w);inp.focus()},300);
+  later(()=>{say('w_'+x.w);inp.focus()},300);
   document.getElementById('f').onsubmit=e=>{
     e.preventDefault();
     const g=inp.value.trim().toLowerCase(); if(!g)return;

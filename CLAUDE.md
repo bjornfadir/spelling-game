@@ -28,6 +28,8 @@ spelling-game/
   tts/audio_af_heart.json   the current 60 generated clips
 ```
 
+`src/game.html` carries its own doctype, charset and viewport tags so it also works on hosts other than claude.ai.
+
 Workflow: edit `src/game.html`, then run `python3 build.py`, then open `dist/index.html` in a browser. The game is a single self-contained file with no server and no network access needed. Fonts (Baloo 2, Andika) come from Google Fonts and fall back to system fonts when offline.
 
 ## How the game works
@@ -46,7 +48,7 @@ Plain HTML, CSS and vanilla JS in one file. No framework and no build step beyon
 
 Rounds are the 10 words shuffled, with a progress bar. The end screen shows the score, the missed words to practise, and a button to the next mode (ee/ea → unscramble → test). Stars are saved in `localStorage` key `ee-stars`, with +5 for a perfect round.
 
-**Design:** teal (`--sea`) marks the ee team and yellow (`--sun`) marks the ea team, consistently everywhere. Light and dark themes are defined through CSS tokens on `:root`. Layout is tablet- and phone-first with big tap targets. Andika is used for the letters because it was designed for early readers.
+**Design:** teal (`--sea`) marks the ee team and yellow (`--sun`) marks the ea team, consistently everywhere. Yellow text is too faint on white (2:1), so ea-team *text* uses `--sun-ink` (dark amber); `--sun` stays for fills and borders. Text on teal uses `--on-sea`. Light and dark themes are defined through CSS tokens on `:root`. Layout is tablet- and phone-first with big tap targets. Andika is used for the letters because it was designed for early readers.
 
 ## Audio / voice
 
@@ -61,7 +63,7 @@ Clip keys (from `mkclips.py`):
 - `l_a, l_b, l_d, l_e, l_f, l_k, l_l, l_m, l_p, l_s, l_t, l_w` — letter names (only the letters these words use)
 - `intro`, `p0`–`p3` (praise), `perfect`, `almost`, `done10`, `score0`–`score9`
 
-In JS, `say(key | [keys])` plays clips in order, and `sayChain(keys, onEach(i), done)` adds a callback per clip (used to light up letters). A new call cancels the one already playing. A missing key is skipped silently.
+All audio goes through one shared `<audio>` element (iOS blocks fresh `Audio()` objects played outside a tap). Every screen change calls `hush()`, which stops speech and cancels delayed auto-play queued with `later()`. In JS, `say(key | [keys])` plays clips in order, and `sayChain(keys, onEach(i), done)` adds a callback per clip (used to light up letters). A new call cancels the one already playing. A missing key is skipped silently.
 
 ### Regenerating audio (e.g. new words or a different voice)
 
