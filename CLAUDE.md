@@ -1,3 +1,5 @@
+> **Moved (2026-10-28):** this game now lives in the Learning Games portal, repo `bjornfadir/learn`, folder `english/spelling/`; the copy at `/home/bjorn/learn/english/spelling/` is the one to edit. This repo only serves a redirect from the old URL (`dist/index.html`), so keep it, because classmates have the old link.
+
 # Long ee & ea Quest — spelling game (handoff)
 
 A browser spelling game Adam built for his daughter (9, in Israel; English is a second language) to learn the 10 words on her spelling test. This file is the handoff so Claude Code can continue the project.
