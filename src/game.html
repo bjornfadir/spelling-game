@@ -89,6 +89,7 @@ input.spell{font-family:var(--body);font-size:2.2rem;font-weight:700;letter-spac
 .letters.covered span{color:var(--muted);background:var(--line)}
 .letters.cmp span{width:48px;height:56px;font-size:1.9rem}
 .letters span.good{border-color:var(--leaf);color:var(--leaf)} .letters span.wrong{border-color:var(--berry);color:var(--berry);background:var(--card)}
+.credit{margin:0;text-align:center;color:var(--muted);font-size:.8rem}
 .cmpwrap{display:flex;flex-direction:column;gap:6px;align-items:center}
 @media (max-width:440px){.letters span{width:50px;height:62px;font-size:2rem}.big-word{font-size:3.2rem}.steps span{font-size:.75rem}}
 @keyframes pop{0%{transform:scale(.6)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
@@ -118,6 +119,7 @@ input.spell{font-family:var(--body);font-size:2.2rem;font-weight:700;letter-spac
     <button id="m-spell" data-mode="spell" aria-pressed="false">✏️ Spelling Test</button>
   </nav>
   <main class="card" id="card"></main>
+  <p class="credit">Voice by ElevenLabs</p>
 </div>
 
 <script type="application/json" id="clips">__CLIPS__</script>

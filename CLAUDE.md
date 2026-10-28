@@ -54,6 +54,10 @@ Rounds are the 10 words shuffled, with a progress bar. The end screen shows the 
 
 ## Audio / voice
 
+**Current voice: ElevenLabs "Lily"** (voice id `pFZP5JQG7iQjIQuC4Bku`, British, `eleven_multilingual_v2`, speed 0.9), picked by Adam on 2026-10-28 after Kokoro mispronounced words. Render with `cd tts && python3 gen_elevenlabs.py pFZP5JQG7iQjIQuC4Bku lily && cd .. && python3 build.py` (the build defaults to `lily`). The key is in `~/.config/elevenlabs/api_key` (chmod 600, never commit it); it only has text-to-speech permission. Clips are cached in `tts/out_el_lily/`, so a re-run only pays for new clips. The whole list is ~1,400 characters. The free tier requires the "Voice by ElevenLabs" credit under the card, so keep it.
+
+Alternatives tried: PocketTTS "alba" on Adam's VoiceStudio (`gen_voicestudio.py` + `pack_wavs.py`, free, renders all 60 clips in ~2 min on odin-cloud), and Adam's cloned voice via VoxCPM2 (too slow on CPU: ~70-120 s per clip). The Kokoro section below is the original pipeline, kept for reference.
+
 Audio is **pre-generated**, not live TTS. This is because:
 - The claude.ai artifact sandbox blocks network calls to other hosts, so a live TTS API can't be called from the page.
 - Browser `speechSynthesis` sounded poor and differed between devices.
@@ -86,7 +90,7 @@ Adam also has his own voice engine at `https://odin-cloud.tail177352.ts.net/`, o
 
 1. Edit `WORDS` in `src/game.html`, giving each word `w`, `e` (emoji), `s` (sentence with `___`), `t` (trick HTML with `<u>` around the vowel pair) and `ts` (the spoken trick).
 2. Mirror the same words, sentences and tricks in `tts/mkclips.py`, and add any new letters to `L`.
-3. Regenerate the audio, then build.
+3. Regenerate the audio (`gen_elevenlabs.py`, which only renders new clips), then build, commit `dist/` and push; GitHub Pages redeploys.
 4. The game assumes every word contains `ee` or `ea` (`vowel()`, the team columns, and the ee-or-ea mode). A list with other spelling patterns (ai/ay, oa/ow, …) needs `vowel()` and the ee/ea mode generalised to a per-week pattern pair, and the team colours relabelled.
 
 ## Ideas not done yet
